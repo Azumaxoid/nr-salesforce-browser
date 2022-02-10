@@ -478,23 +478,9 @@
         let workspaceAPI = component.find("workspace"); // console API component
         
         setTimeout(() => { 
-            // Get route and other details of infocus console Tab, if available
-            workspaceAPI.getFocusedTabInfo().then(function(response) {
-                let tabDetails = response;
-                console.log('*** Mon: workspace URL:' + tabDetails.url);
-                console.log('*** Mon: browser URL:' + baseUrl + tabRoute);
-                tabUrl = tabDetails.url ? tabDetails.url : baseUrl + tabRoute; 
-                tabRoute = tabUrl.toString().replace(baseUrl, ''); // remove base URL from route
-                tabRouteStandardised = helper.createStandardisedRoute(component, helper, tabRoute, tabDetails);
-                let myEvent = pathToAppend ? 
-                    { "type" : "EVT_LOCATION_CHANGE", "data" : {"route" : tabRoute, "routeStandardised" : tabRouteStandardised + '/' + customPath, "time" : Date.now()}} : 
-                    { "type" : "EVT_LOCATION_CHANGE", "data" : {"route" : tabRoute, "routeStandardised" : tabRouteStandardised, "time" : Date.now()}} ;
-                helper.handleEvent(component, helper, myEvent);
-            })
-            .catch(function(error) {
-                // **EH - WARNING
-                helper.showError(component, "Error getting tab info: " + error);
-            });
+            // Get route and other details of infocus console Tab, for classic
+            let myEvent = { "type" : "EVT_LOCATION_CHANGE", "data" : {"route" : window.location.href, "routeStandardised" : window.document.title, "time" : Date.now()}}
+            helper.handleEvent(component, helper, myEvent);
         }, 50);
     },     
     createStandardisedRoute : function (component, helper, tabRoute, tabDetails) {
